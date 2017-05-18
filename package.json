@@ -1,0 +1,22 @@
+{
+  "name": "debrief-server",
+  "version": "1.0.0",
+  "description": "A server for getting news for debrief",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/w4v3s/debrief-server.git"
+  },
+  "keywords": [
+    "news"
+  ],
+  "author": "Kai Amelung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/w4v3s/debrief-server/issues"
+  },
+  "homepage": "https://github.com/w4v3s/debrief-server#readme"
+}
