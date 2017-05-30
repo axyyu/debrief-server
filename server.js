@@ -15,7 +15,7 @@ var cronJob = require('cron').CronJob;
 var job = new cronJob({
 	cronTime: '00 00 24 * * *',
 	onTick: function() {
-		var curr = new Date(new Date().getMilliseconds()-8.64*10000000)
+		var curr = new Date(new Date().getMilliseconds()-86400000)
 		var date = curr.getFullYear()+"-"+(curr.getMonth()+1)+"-"+curr.getDate()
 		ref.child('debriefings/'+date.substring(5)).set({
 			timestamp: firebase.database.ServerValue.TIMESTAMP
