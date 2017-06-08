@@ -19,9 +19,9 @@ var textapi = new AYLIENTextAPI({
 var cronJob = require('cron').CronJob;
 
 var job = new cronJob({
-	cronTime: '00 00 24 * * *',
+	cronTime: '00 00 00 * * *',
 	onTick: function() {
-		var curr = new Date(new Date().getMilliseconds()-86400000)
+		var curr = new Date(Date.now()-86400000)
 		var date = curr.getFullYear()+"-"+(curr.getMonth()+1)+"-"+curr.getDate()
 		ref.child('debriefings/'+date.substring(5)).set({
 			timestamp: firebase.database.ServerValue.TIMESTAMP
@@ -31,10 +31,10 @@ var job = new cronJob({
 			guardian.content({
 		  		q : topic,
 		  		fromDate : date,
-		  		pagesize : 5,
+		  		pageSize : 5,
 		  		pages : 1
 			}).then(function(response){
-		  		response.results.forEach(function(e){
+		  		response.response.results.forEach(function(e){
 		  			textapi.summarize({
 						url: e.webUrl,
 						sentences_number: 6
@@ -67,3 +67,17 @@ var job = new cronJob({
 });
 
 job.start();
+
+var stayjob = new cronJob({
+	cronTime: '00 00,20,40 * * * *',
+	onTick: function() {
+		console.log("still running")
+		var x = 4
+		x = x*5
+		x = x%3
+	},
+	start: false,
+	timeZone: "America/Los_Angeles"
+});
+
+stayjob.start();
