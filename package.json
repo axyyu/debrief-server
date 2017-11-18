@@ -18,5 +18,11 @@
   "bugs": {
     "url": "https://github.com/w4v3s/debrief-server/issues"
   },
-  "homepage": "https://github.com/w4v3s/debrief-server#readme"
+  "homepage": "https://github.com/w4v3s/debrief-server#readme",
+  "dependencies": {
+    "aylien_textapi": "^0.6.0",
+    "cron": "^1.3.0",
+    "firebase-admin": "^5.5.0",
+    "guardian-news": "0.0.2"
+  }
 }

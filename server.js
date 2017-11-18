@@ -44,12 +44,13 @@ var job = new cronJob({
 							sentences_number: 2
 						}, function(error2, response2) {
 							if (error2 === null && error1 === null) {
-								ref.child('debriefings/'+date.substring(5)+'/'+topic).push({
-		  							title: e.webTitle,
-		  							url: e.webUrl,
-		  							shortsum: response2.sentences.join(' '),
-		  							longsum: response1.sentences.join(' ')
-		  						});
+								console.log(date);
+								// ref.child('debriefings/'+date.substring(5)+'/'+topic).push({
+		  						// 	title: e.webTitle,
+		  						// 	url: e.webUrl,
+		  						// 	shortsum: response2.sentences.join(' '),
+		  						// 	longsum: response1.sentences.join(' ')
+		  						// });
 							}
 							else {
 								console.log("There was an error with aylien")
