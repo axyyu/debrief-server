@@ -27,7 +27,7 @@ var job = new cronJob({
 		ref.child('debriefings/'+date).set({
 			timestamp: firebase.database.ServerValue.TIMESTAMP
 		});
-		topics = ['sports', 'politics', 'money','technology','entertainment','science','music','movies' ]
+		topics = ['sports', 'politics', 'money','technology']
 		topics.forEach(function(topic){
 			guardian.content({
 		  		q : topic,
