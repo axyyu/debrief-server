@@ -4,6 +4,7 @@
   "description": "A server for getting news for debrief",
   "main": "server.js",
   "scripts": {
+    "start":"node server.js",
     "test": "node server.js"
   },
   "repository": {

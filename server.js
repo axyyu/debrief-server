@@ -21,12 +21,13 @@ var cronJob = require('cron').CronJob;
 var job = new cronJob({
 	cronTime: '00 00 00 * * *',
 	onTick: function() {
+		console.log("Starting")
 		var curr = new Date(Date.now()-86400000)
 		var date = curr.getFullYear()+"-"+(curr.getMonth()+1)+"-"+curr.getDate()
-		ref.child('debriefings/'+date.substring(5)).set({
+		ref.child('debriefings/'+date).set({
 			timestamp: firebase.database.ServerValue.TIMESTAMP
 		});
-		topics = ['sports', 'politics']
+		topics = ['sports', 'politics', 'money','technology','entertainment','science','music','movies' ]
 		topics.forEach(function(topic){
 			guardian.content({
 		  		q : topic,
@@ -44,13 +45,13 @@ var job = new cronJob({
 							sentences_number: 2
 						}, function(error2, response2) {
 							if (error2 === null && error1 === null) {
-								console.log(date);
-								// ref.child('debriefings/'+date.substring(5)+'/'+topic).push({
-		  						// 	title: e.webTitle,
-		  						// 	url: e.webUrl,
-		  						// 	shortsum: response2.sentences.join(' '),
-		  						// 	longsum: response1.sentences.join(' ')
-		  						// });
+								// console.log(date);
+								ref.child('debriefings/'+date+'/'+topic).push({
+		  							title: e.webTitle,
+		  							url: e.webUrl,
+		  							shortsum: response2.sentences.join(' '),
+		  							longsum: response1.sentences.join(' ')
+		  						});
 							}
 							else {
 								console.log("There was an error with aylien")
@@ -64,10 +65,62 @@ var job = new cronJob({
 		})
 	},
 	start: false,
-	timeZone: "America/Los_Angeles"
+	timeZone: "America/New_York"
 });
 
 job.start();
+
+var job2 = new cronJob({
+	cronTime: '00 05 00 * * *',
+	onTick: function() {
+		console.log("Starting")
+		var curr = new Date(Date.now()-86400000)
+		var date = curr.getFullYear()+"-"+(curr.getMonth()+1)+"-"+curr.getDate()
+		ref.child('debriefings/'+date).set({
+			timestamp: firebase.database.ServerValue.TIMESTAMP
+		});
+		topics = ['entertainment','science','music','movies' ]
+		topics.forEach(function(topic){
+			guardian.content({
+		  		q : topic,
+		  		fromDate : date,
+		  		pageSize : 5,
+		  		pages : 1
+			}).then(function(response){
+		  		response.response.results.forEach(function(e){
+		  			textapi.summarize({
+						url: e.webUrl,
+						sentences_number: 6
+					}, function(error1, response1) {
+						textapi.summarize({
+							url: e.webUrl,
+							sentences_number: 2
+						}, function(error2, response2) {
+							if (error2 === null && error1 === null) {
+								// console.log(date);
+								ref.child('debriefings/'+date+'/'+topic).push({
+		  							title: e.webTitle,
+		  							url: e.webUrl,
+		  							shortsum: response2.sentences.join(' '),
+		  							longsum: response1.sentences.join(' ')
+		  						});
+							}
+							else {
+								console.log("There was an error with aylien")
+							}
+						});
+					});
+		  		});
+			}, function(err){
+				console.log(err);
+			});
+		})
+	},
+	start: false,
+	timeZone: "America/New_York"
+});
+
+job2.start();
 
 var stayjob = new cronJob({
 	cronTime: '00 00,20,40 * * * *',
@@ -78,7 +131,7 @@ var stayjob = new cronJob({
 		x = x%3
 	},
 	start: false,
-	timeZone: "America/Los_Angeles"
+	timeZone: "America/New_York"
 });
 
 stayjob.start();
