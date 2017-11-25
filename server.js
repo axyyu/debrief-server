@@ -135,3 +135,6 @@ var stayjob = new cronJob({
 });
 
 stayjob.start();
+
+var http = require('http');
+http.listen(process.env.PORT || 5000);
