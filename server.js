@@ -137,4 +137,7 @@ var stayjob = new cronJob({
 stayjob.start();
 
 var http = require('http');
-http.listen(process.env.PORT || 5000);
+
+http.createServer(function (request, response) {
+	console.log("SERVER CREATED")
+}).listen(process.env.PORT || 5000);
