@@ -141,3 +141,7 @@ var http = require('http');
 http.createServer(function (request, response) {
 	console.log("SERVER CREATED")
 }).listen(process.env.PORT || 5000);
+
+setInterval(function(){
+	http.get("https://guarded-woodland-24025.herokuapp.com/");
+}, 1000*3600*5);
