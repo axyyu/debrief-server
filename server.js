@@ -145,5 +145,5 @@ http.createServer(function (request, response) {
 setInterval(function(){
 	console.log("pinging")
 	http.get("http://guarded-woodland-24025.herokuapp.com/");
-}, 1000*60);
+}, 1000*60*5);
 
