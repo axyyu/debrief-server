@@ -21,16 +21,15 @@ var cronJob = require('cron').CronJob;
 var job = new cronJob({
 	cronTime: '00 00 00 * * *',
 	onTick: function() {
-		console.log("Starting")
 		var curr = new Date(Date.now()-86400000)
 		var date = curr.getFullYear()+"-"+(curr.getMonth()+1)+"-"+curr.getDate()
-		ref.child('debriefings/'+date).set({
+		ref.child('debriefings/'+date.substring(5)).set({
 			timestamp: firebase.database.ServerValue.TIMESTAMP
 		});
-		topics = ['sports', 'politics', 'money','technology']
+		topics = [{name: 'sports', tag: 'sport'}, {name: 'politics', tag: 'politics'}, {name: 'technology', tag: 'technology'}, {name: 'science', tag: 'science'}, {name: 'world', tag: 'world'}]
 		topics.forEach(function(topic){
 			guardian.content({
-		  		q : topic,
+		  		section : topic.tag,
 		  		fromDate : date,
 		  		pageSize : 5,
 		  		pages : 1
@@ -42,11 +41,10 @@ var job = new cronJob({
 					}, function(error1, response1) {
 						textapi.summarize({
 							url: e.webUrl,
-							sentences_number: 2
+							sentences_number: 1
 						}, function(error2, response2) {
 							if (error2 === null && error1 === null) {
-								// console.log(date);
-								ref.child('debriefings/'+date+'/'+topic).push({
+								ref.child('debriefings/'+date.substring(5)+'/'+topic.name).push({
 		  							title: e.webTitle,
 		  							url: e.webUrl,
 		  							shortsum: response2.sentences.join(' '),
@@ -54,7 +52,7 @@ var job = new cronJob({
 		  						});
 							}
 							else {
-								console.log("There was an error with aylien")
+								console.log("There was an error with aylien "+error1+" "+error2)
 							}
 						});
 					});
@@ -65,24 +63,20 @@ var job = new cronJob({
 		})
 	},
 	start: false,
-	timeZone: "America/New_York"
+	timeZone: "America/Los_Angeles"
 });
 
 job.start();
 
 var job2 = new cronJob({
-	cronTime: '00 05 00 * * *',
+	cronTime: '02 00 00 * * *',
 	onTick: function() {
-		console.log("Starting")
 		var curr = new Date(Date.now()-86400000)
 		var date = curr.getFullYear()+"-"+(curr.getMonth()+1)+"-"+curr.getDate()
-		ref.child('debriefings/'+date).set({
-			timestamp: firebase.database.ServerValue.TIMESTAMP
-		});
-		topics = ['entertainment','science','music','movies' ]
+		topics = [{name: 'money', tag: 'money'}, {name: 'entertainment', tag: 'tv-and-radio'}, {name: 'movies', tag: 'film'}, {name: 'music', tag: 'music'}]
 		topics.forEach(function(topic){
 			guardian.content({
-		  		q : topic,
+		  		section : topic.tag,
 		  		fromDate : date,
 		  		pageSize : 5,
 		  		pages : 1
@@ -97,8 +91,7 @@ var job2 = new cronJob({
 							sentences_number: 2
 						}, function(error2, response2) {
 							if (error2 === null && error1 === null) {
-								// console.log(date);
-								ref.child('debriefings/'+date+'/'+topic).push({
+								ref.child('debriefings/'+date.substring(5)+'/'+topic.name).push({
 		  							title: e.webTitle,
 		  							url: e.webUrl,
 		  							shortsum: response2.sentences.join(' '),
@@ -106,7 +99,7 @@ var job2 = new cronJob({
 		  						});
 							}
 							else {
-								console.log("There was an error with aylien")
+								console.log("There was an error with aylien "+error1+" "+error2)
 							}
 						});
 					});
@@ -117,37 +110,32 @@ var job2 = new cronJob({
 		})
 	},
 	start: false,
-	timeZone: "America/New_York"
+	timeZone: "America/Los_Angeles"
 });
 
 job2.start();
 
-var stayjob = new cronJob({
-	cronTime: '00 00,20,40 * * * *',
-	onTick: function() {
-		console.log("still running")
-		var x = 4
-		x = x*5
-		x = x%3
-	},
-	start: false,
-	timeZone: "America/New_York"
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+var port = process.env.PORT || 8080;
+
+var router = express.Router();
+
+app.use('/', router);
+
+router.get('/', function(req, res){
+	res.json({message: "Welcome to my API"})
 });
 
-stayjob.start();
+app.listen(port);
+console.log('Magic happens on port ' + port);
 
-var http = require('http');
-
-http.createServer(function (request, response) {
-	console.log("<-----SERVER CONTACTED----->");
-	response.writeHead(200, {'Content-Type': 'text/plain'});
-	response.write('Hello World!');
-	response.end();
-}).listen(process.env.PORT || 5000);
-
-setInterval(function(){
-	console.log("pinging")
-	http.get("http://guarded-woodland-24025.herokuapp.com/");
-}, 1000*60*5);
-
-console.log("SERVER CREATED")
+var http = require("http");
+setInterval(function() {
+    http.get("http://debriefserver.herokuapp.com");
+}, 300000);
