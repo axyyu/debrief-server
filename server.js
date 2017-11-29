@@ -91,7 +91,7 @@ var job2 = new cronJob({
 							sentences_number: 2
 						}, function(error2, response2) {
 							if (error2 === null && error1 === null) {
-								ref.child('debriefings/'+date.substring(5)+'/'+topic.name).push({
+								ref.child('debriefings/'+date+'/'+topic.name).push({
 		  							title: e.webTitle,
 		  							url: e.webUrl,
 		  							shortsum: response2.sentences.join(' '),
