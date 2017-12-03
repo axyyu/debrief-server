@@ -129,7 +129,8 @@ var router = express.Router();
 app.use('/', router);
 
 router.get('/', function(req, res){
-	res.json({message: "Welcome to my API"})
+	res.send("HELLO WORLD!");
+	// res.json({message: "Welcome to my API"})
 });
 
 app.listen(port);
@@ -137,5 +138,8 @@ console.log('Magic happens on port ' + port);
 
 var http = require("http");
 setInterval(function() {
-    http.get("http://debriefserver.herokuapp.com");
-}, 300000);
+	var hello = http.get("http://debriefserver.herokuapp.com");
+	// console.log(hello);
+}, 60000); 
+
+//300000);
