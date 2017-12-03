@@ -138,7 +138,7 @@ console.log('Magic happens on port ' + port);
 
 var http = require("http");
 setInterval(function() {
-	var hello = http.get("http://debriefserver.herokuapp.com");
+	var hello = http.get("http://guarded-woodland-24025.herokuapp.com/");
 	// console.log(hello);
 }, 60000); 
 
