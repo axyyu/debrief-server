@@ -23,7 +23,7 @@ var job = new cronJob({
 	onTick: function() {
 		var curr = new Date(Date.now()-86400000)
 		var date = curr.getFullYear()+"-"+(curr.getMonth()+1)+"-"+curr.getDate()
-		ref.child('debriefings/'+date.substring(5)).set({
+		ref.child('debriefings/'+date.set({
 			timestamp: firebase.database.ServerValue.TIMESTAMP
 		});
 		topics = [{name: 'sports', tag: 'sport'}, {name: 'politics', tag: 'politics'}, {name: 'technology', tag: 'technology'}, {name: 'science', tag: 'science'}, {name: 'world', tag: 'world'}]
@@ -44,7 +44,7 @@ var job = new cronJob({
 							sentences_number: 1
 						}, function(error2, response2) {
 							if (error2 === null && error1 === null) {
-								ref.child('debriefings/'+date.substring(5)+'/'+topic.name).push({
+								ref.child('debriefings/'+date+'/'+topic.name).push({
 		  							title: e.webTitle,
 		  							url: e.webUrl,
 		  							shortsum: response2.sentences.join(' '),
