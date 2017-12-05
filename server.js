@@ -23,7 +23,7 @@ var job = new cronJob({
 	onTick: function() {
 		var curr = new Date(Date.now()-86400000)
 		var date = curr.getFullYear()+"-"+(curr.getMonth()+1)+"-"+curr.getDate()
-		ref.child('debriefings/'+date.set({
+		ref.child('debriefings/'+date).set({
 			timestamp: firebase.database.ServerValue.TIMESTAMP
 		});
 		topics = [{name: 'sports', tag: 'sport'}, {name: 'politics', tag: 'politics'}, {name: 'technology', tag: 'technology'}, {name: 'science', tag: 'science'}, {name: 'world', tag: 'world'}]
